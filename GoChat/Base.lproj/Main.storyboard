@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="j2d-G6-POv">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Login View Controller-->
+        <scene sceneID="ma0-sc-zoU">
+            <objects>
+                <viewController storyboardIdentifier="LoginVC" id="j2d-G6-POv" customClass="LoginViewController" customModule="GoChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ak4-ps-aP1"/>
+                        <viewControllerLayoutGuide type="bottom" id="8zD-FK-aiU"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mXq-P7-5yS">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CW4-ES-o4h">
+                                <rect key="frame" x="88" y="582" width="200" height="60"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="CYR-Gt-k5Y"/>
+                                    <constraint firstAttribute="width" constant="200" id="NQR-nJ-Gz7"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="進入同夥模式">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="NickNameButton:" destination="j2d-G6-POv" eventType="touchUpInside" id="YIu-20-8pM"/>
+                                    <segue destination="g23-Pf-vCe" kind="presentation" identifier="LoginToApp" id="QEs-mj-CXg"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="logo.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="nLK-6j-0sd">
+                                <rect key="frame" x="0.0" y="42" width="375" height="361"/>
+                            </imageView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="我的暱稱" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="f7Y-LF-Tqo">
+                                <rect key="frame" x="87" y="457" width="200" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="As7-1g-u8h"/>
+                                    <constraint firstAttribute="width" constant="200" id="KXT-ng-YrR"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rsd-Pm-mvA">
+                                <rect key="frame" x="88" y="505" width="200" height="60"/>
+                                <color key="backgroundColor" red="1" green="0.76028923280000005" blue="0.76817506619999998" alpha="0.42762433979999998" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="Hxj-nN-GxD"/>
+                                    <constraint firstAttribute="height" constant="60" id="gQD-99-bH4"/>
+                                </constraints>
+                                <state key="normal" title="  設定個人照片" image="addphoto.png">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="NickNameButton:" destination="j2d-G6-POv" eventType="touchUpInside" id="3Nt-Hp-AqV"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nLK-6j-0sd" firstAttribute="top" secondItem="ak4-ps-aP1" secondAttribute="bottom" constant="22" id="0pg-So-23z"/>
+                            <constraint firstItem="Rsd-Pm-mvA" firstAttribute="centerX" secondItem="mXq-P7-5yS" secondAttribute="centerX" id="1vo-Y8-8Wz"/>
+                            <constraint firstItem="8zD-FK-aiU" firstAttribute="top" secondItem="CW4-ES-o4h" secondAttribute="bottom" constant="25" id="Htw-Uc-oAB"/>
+                            <constraint firstItem="CW4-ES-o4h" firstAttribute="centerX" secondItem="mXq-P7-5yS" secondAttribute="centerX" id="IvR-7T-X8p"/>
+                            <constraint firstItem="nLK-6j-0sd" firstAttribute="width" secondItem="mXq-P7-5yS" secondAttribute="width" id="VNo-2g-meG"/>
+                            <constraint firstItem="8zD-FK-aiU" firstAttribute="top" secondItem="Rsd-Pm-mvA" secondAttribute="bottom" constant="102" id="Vqa-a9-TiK"/>
+                            <constraint firstItem="8zD-FK-aiU" firstAttribute="top" secondItem="f7Y-LF-Tqo" secondAttribute="bottom" constant="180" id="Y6z-8S-5wZ"/>
+                            <constraint firstItem="nLK-6j-0sd" firstAttribute="centerX" secondItem="mXq-P7-5yS" secondAttribute="centerX" id="qlp-VN-JoO"/>
+                            <constraint firstItem="f7Y-LF-Tqo" firstAttribute="centerX" secondItem="mXq-P7-5yS" secondAttribute="centerX" id="rJM-hI-u7t"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="Name" destination="f7Y-LF-Tqo" id="yaq-xC-okh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3yu-4d-nKH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-178.40000000000001" y="488.90554722638683"/>
+        </scene>
+        <!--Rooms View Controller-->
+        <scene sceneID="0th-Ej-Wxv">
+            <objects>
+                <viewController storyboardIdentifier="RoomVC" id="ovH-f5-pHf" userLabel="Rooms View Controller" customClass="RoomsViewController" customModule="GoChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Edy-VD-d7D"/>
+                        <viewControllerLayoutGuide type="bottom" id="UKX-Pe-hWc"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="pb9-aq-XGk">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iyY-ZW-Lse">
+                                <rect key="frame" x="0.0" y="74" width="375" height="600"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A1t-NI-yjn">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1gH-fK-ixu">
+                                                <rect key="frame" x="225" y="70" width="100" height="50"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                <state key="normal" title="創立房間">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="NewRoom:" destination="ovH-f5-pHf" eventType="touchUpInside" id="wJr-x0-kEp"/>
+                                                </connections>
+                                            </button>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="輸入房名" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="I0b-eK-eZ0">
+                                                <rect key="frame" x="58" y="80" width="100" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <nil key="textColor"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vmn-ut-ZaR">
+                                        <rect key="frame" x="0.0" y="200" width="375" height="200"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dBQ-QY-ZFA">
+                                                <rect key="frame" x="222" y="75" width="100" height="50"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                <state key="normal" title="進入房間">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="EnterRoom:" destination="ovH-f5-pHf" eventType="touchUpInside" id="Nf4-fW-LjX"/>
+                                                    <segue destination="Ezb-JR-hjq" kind="show" identifier="ShowMapChat" id="9Dz-fU-bOh"/>
+                                                </connections>
+                                            </button>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="輸入房號" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hZg-Aa-Zze">
+                                                <rect key="frame" x="59" y="85" width="100" height="30"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <nil key="textColor"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                        </subviews>
+                                        <color key="backgroundColor" red="1" green="0.76028923280000005" blue="0.76817506619999998" alpha="0.42762433979999998" colorSpace="calibratedRGB"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lvI-Vb-hdf">
+                                        <rect key="frame" x="0.0" y="400" width="375" height="200"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="iyY-ZW-Lse" firstAttribute="leading" secondItem="pb9-aq-XGk" secondAttribute="leading" id="67F-8X-xV8"/>
+                            <constraint firstItem="iyY-ZW-Lse" firstAttribute="width" secondItem="pb9-aq-XGk" secondAttribute="width" id="Lqu-Ts-dz4"/>
+                            <constraint firstItem="iyY-ZW-Lse" firstAttribute="height" secondItem="pb9-aq-XGk" secondAttribute="height" multiplier="0.9" id="QS2-z4-K80"/>
+                            <constraint firstItem="iyY-ZW-Lse" firstAttribute="top" secondItem="Edy-VD-d7D" secondAttribute="bottom" constant="10" id="brP-wW-nnE"/>
+                            <constraint firstAttribute="trailing" secondItem="iyY-ZW-Lse" secondAttribute="trailing" id="eZc-ew-cuX"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="vR2-Yz-76T">
+                        <barButtonItem key="leftBarButtonItem" title="登出" id="trX-Ye-m5K">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="Logout:" destination="ovH-f5-pHf" id="njy-qr-jMH"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="InputRoomName" destination="I0b-eK-eZ0" id="XHH-q1-47n"/>
+                        <outlet property="InputRoomNum" destination="hZg-Aa-Zze" id="DFG-c3-GcE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yf6-65-nHy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1420" y="488.90554722638683"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="hQU-kq-n6L">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" hidesBarsOnSwipe="YES" id="g23-Pf-vCe" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="YcJ-Qg-LxL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <offsetWrapper key="textShadowOffset" horizontal="0.0" vertical="0.0"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="ovH-f5-pHf" kind="relationship" relationship="rootViewController" id="UxG-wV-huQ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LT5-lA-N7h" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="578" y="489"/>
+        </scene>
+        <!--Room Map View Controller-->
+        <scene sceneID="lfu-1h-KeN">
+            <objects>
+                <viewController storyboardIdentifier="mapChatVC" id="Ezb-JR-hjq" customClass="RoomMapViewController" customModule="GoChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="JeS-FN-yxS"/>
+                        <viewControllerLayoutGuide type="bottom" id="QRK-pM-NAw"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="dSz-mF-cOR">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2ds-yg-q7Z">
+                                <rect key="frame" x="0.0" y="337" width="375" height="330"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <segue destination="zpt-v9-M7i" kind="embed" identifier="showChat" id="6RP-xp-c2O"/>
+                                </connections>
+                            </containerView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r1M-Qt-gmS">
+                                <rect key="frame" x="190" y="291" width="68" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Refresh"/>
+                                <connections>
+                                    <action selector="updateLocation" destination="Ezb-JR-hjq" eventType="touchUpInside" id="DdO-bq-rqw"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Moo-85-1mb">
+                                <rect key="frame" x="295" y="291" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Photo"/>
+                                <connections>
+                                    <action selector="choosePictureWithSender:" destination="Ezb-JR-hjq" eventType="touchUpInside" id="wpt-iq-Klw"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pKf-dh-QTM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2309.5999999999999" y="488.90554722638683"/>
+        </scene>
+        <!--Room Chat View Controller-->
+        <scene sceneID="M0s-Wx-uiP">
+            <objects>
+                <viewController id="zpt-v9-M7i" customClass="RoomChatViewController" customModule="GoChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2iH-Si-IgF"/>
+                        <viewControllerLayoutGuide type="bottom" id="kB0-Qf-tcN"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7g2-dL-kWB">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="330"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="1" green="0.77618416674263369" blue="0.76522235488561863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mDx-X1-cnG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3215" y="640"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="addphoto.png" width="50" height="50"/>
+        <image name="logo.jpg" width="409" height="360"/>
+    </resources>
+</document>
