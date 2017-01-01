@@ -1,14 +1,10 @@
 //
-//  ViewController.swift
-//  TripGIF
+//  RoomMapViewController.swift
+//  GoChat
 //
-//  Created by Jennifer K. on 2016/10/30.
-//  Copyright © 2016年 TingYuKuo. All rights reserved.
+//  Created by 鄭薇 on 2017/1/1.
+//  Copyright © 2017年 LilyCheng. All rights reserved.
 //
-
-// lilycheng84
-//Wei10google
-
 
 import UIKit
 import GoogleMaps
@@ -21,48 +17,58 @@ import FirebaseDatabase
 import FirebaseStorage
 import FirebaseAuth
 
-class MapViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,CLLocationManagerDelegate, GMSMapViewDelegate {
+class RoomMapViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate,CLLocationManagerDelegate, GMSMapViewDelegate {
+    
+    // 從 RoomsViewController 傳過來的變數：
+    var targetRoomNum = String()                  //房號
+    var senderDisplayName = String()              //傳送者名稱
+    //
+    
+    //********抓出房間的根參考位址
+    private lazy var roomRef: FIRDatabaseReference = FIRDatabase.database().reference().child("TripGifRooms").child("\(self.targetRoomNum)")
     
     var mapView: GMSMapView!
     var subView: UIView!
     var locationManager = CLLocationManager()
-    var myLat: String=""
-    var myLong: String=""
+    var myLat = String()
+    var myLong = String()
     var lat = CLLocationDegrees()
     var long = CLLocationDegrees()
     var senderId = String()
+    let uuid: String =  UIDevice.current.identifierForVendor!.uuidString
     
     override func viewDidLoad() {
+        let targetRoomName = String("我的旅行房間名稱")        //房間名稱
+        //要寫一個function從firebase中抓出所輸入房號的房間名
+        title = targetRoomName          //將此頁面標題設為房間名字
+        
         // Location Manager
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization() // 取得地理位置權限
         locationManager.distanceFilter = kCLLocationAccuracyNearestTenMeters;
         locationManager.desiredAccuracy = kCLLocationAccuracyBest; // 設定座標精準度
         locationManager.startUpdatingLocation()
+        print("自己位置偵測完畢")
         
-
+        // 取得代表目前的使用者的id
+//        self.senderId = ((FIRAuth.auth()?.currentUser?.uid)!)
+        self.senderId = uuid
+        print("傳送者的id = \(self.senderId)")
         
-        // 新增mapuser到firebase
-        FIRAuth.auth()?.signInAnonymously(completion: { (user, error) in
-            if let err:Error = error {
-                print(err.localizedDescription)
-                return
-            }
-            // 取得代表目前的使用者的id
-            self.senderId = ((FIRAuth.auth()?.currentUser?.uid)!)
-            print("senderId = \(self.senderId)")
-            // 新增user資訊到firebase的mapuser欄位
-            let newUser = FIRDatabase.database().reference().child("mapuser").childByAutoId()
-            let newUserData = ["name":"testuser","latitude": self.myLat,"longitude": self.myLong]
-            newUser.setValue(newUserData)
-            })
-        // 開始讀取firebase目前有的使用者地理位置等資訊
-        observeLocation()
-        // 設置Google Map
-        setupMap()
-
+        // 新增user資訊到firebase 這間房間 TripGifRooms -> RoomNum -> 的user欄位
+        let thisUser = self.roomRef.child("roomUser").child(uuid)
+//        let newUserData = ["name":self.senderDisplayName, "latitude": self.myLat, "longitude": self.myLong]
+//        thisUser.setValue(newUserData)
+        thisUser.child("latitude").setValue(22.5)
+        thisUser.child("longitude").setValue(120)
+        print(self.myLat)
+        print("已新增使用者")
+        setupMap()          // 設置Google Map
         DispatchQueue.main.async { () -> Void in
         }
+//        refreshLocation()
+        observeLocation()   // 開始讀取firebase目前有的使用者地理位置等資訊
+
     }
     
     
@@ -80,23 +86,27 @@ class MapViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         mapView.settings.compassButton = true
         self.view.addSubview(subView)
         subView.addSubview(mapView)
+        print("設置完地圖")
     }
+    
     // 刷新firebase中的目前使用者的地理位置資訊
     func refreshLocation() {
-        let prntRef  = FIRDatabase.database().reference().child("mapuser").child((FIRAuth.auth()?.currentUser?.uid)!)
+        let prntRef  = self.roomRef.child("roomUser").child(uuid)
         prntRef.updateChildValues(["latitude": self.myLat])
         prntRef.updateChildValues(["longitude": self.myLong])
     }
+    
     // 按下refresh按鈕時，執行清除地圖上的所有marker，並放上新的marker，來製造使用者移動的效果
     @IBAction func updateLocation(){
         mapView.clear()
+        refreshLocation()
         observeLocation()
     }
+    
     //  偵測裝置目前的GPS位置
-    func locationManager(_ manager: CLLocationManager,
-                         didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let curLocation:CLLocation = locations[0]
-
+        
         lat = curLocation.coordinate.latitude
         long = curLocation.coordinate.longitude
         print("latitude = \(lat)")
@@ -105,38 +115,31 @@ class MapViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         myLat = String(describing: lat)
         myLong = String(describing: long)
         //  只要位置有變動，就刷新firebase中使用者的經緯度資料
-        refreshLocation()
+//        refreshLocation()
     }
-    //  
+    //
     @IBAction func choosePicture(sender: UIButton) {
         let picController = UIImagePickerController()
         picController.delegate = self
         picController.allowsEditing = true
         picController.sourceType = .photoLibrary
         let alertController = UIAlertController(title: "Add picture", message: "Choose From",preferredStyle: UIAlertControllerStyle.actionSheet)
-        
-        
         let cameraController = UIAlertAction(title: "Camera", style: .default, handler: { action in picController.sourceType = .camera
             self.present(picController, animated: true, completion: nil)
         })
-        
         let photoLibraryController = UIAlertAction(title: "Photos Library", style: .default, handler: { action in
             picController.sourceType = UIImagePickerControllerSourceType.photoLibrary
             self.present(picController, animated: true, completion: nil)
         })
-        
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive,handler: nil)
-        
         alertController.addAction(cameraController)
         alertController.addAction(photoLibraryController)
         alertController.addAction(cancelAction)
         
         present(alertController, animated: true, completion: nil)
-        
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]){
-        
         let image = info[UIImagePickerControllerOriginalImage] as? UIImage
         var newImage = UIImage()
         
@@ -167,7 +170,7 @@ class MapViewController: UIViewController, UIImagePickerControllerDelegate, UINa
             mapView.animate(to: camera)
             
             picker.dismiss(animated: true, completion: nil)
-
+            
         }else{  // 如果照片沒有地理位置
             print("沒有地理位置")
             picker.dismiss(animated: true, completion: nil)
@@ -222,9 +225,7 @@ class MapViewController: UIViewController, UIImagePickerControllerDelegate, UINa
     }
     
     func cropToBounds(image: UIImage, width: Double, height: Double) -> UIImage {
-        
         let contextImage: UIImage = UIImage(cgImage: image.cgImage!)
-        
         let contextSize: CGSize = contextImage.size
         
         var posX: CGFloat = 0.0
@@ -256,7 +257,6 @@ class MapViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         return image
     }
     
-    
     func maskRoundedImage(image: UIImage, radius: Float, borderWidth: Float) -> UIImage {
         let imageView: UIImageView = UIImageView(image: image)
         var layer: CALayer = CALayer()
@@ -279,31 +279,29 @@ class MapViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         locationManager.stopUpdatingLocation() // 背景執行時關閉定位功能
     }
     
-    func observeUsers(id: String){
-        
-        FIRDatabase.database().reference().child("mapuser").child(id).observe(FIRDataEventType.value){
-            (snapshot: FIRDataSnapshot) in
-            if let dict = snapshot.value as? [String:String]
-            {
-                //取出成員資料
-                print(dict)
-                let myid = self.senderId
-                print("my id=\(myid)")
-
-            }
-        }
-    }
-    
+//    func observeUsers(id: String){
+//        self.roomRef.child("roomUser").child(id).observe(FIRDataEventType.value){
+//            (snapshot: FIRDataSnapshot) in
+//            if let dict = snapshot.value as? [String:String]
+//            {
+//                //取出自己資料
+//                print(dict)
+//                let myid = self.senderId
+//                print("my id=\(myid)")
+//            }
+//        }
+//    }
+//    
     func observeLocation(){
-        
-        FIRDatabase.database().reference().child("mapuser").observe(FIRDataEventType.childAdded){
+        self.roomRef.child("roomUser").observe(FIRDataEventType.childAdded){
             (snapshot: FIRDataSnapshot) in
             if let dict = snapshot.value as? [String: AnyObject]{
                 print("my dict\(dict)")
-                let latitude = dict["latitude"] as! String
-                let longitude = dict["longitude"] as! String
-                print("mapuser latitude\(Double(latitude)!)")
-                print("mapuser latitude\(Double(longitude)!)")
+                
+//                let latitude = dict["latitude"] as! String
+//                let longitude = dict["longitude"] as! String
+//                print(dict["latitude"])
+
                 
                 // get user profile picture
                 var newImage = UIImage()
@@ -315,6 +313,7 @@ class MapViewController: UIViewController, UIImagePickerControllerDelegate, UINa
                 }else{
                     newImage = UIImage(named:"default-user-image.png")!
                 }
+                
                 // make user as marker
                 newImage = self.ResizeImage(image: newImage, targetSize: CGSize(width: 80, height:80))
                 newImage = self.cropToBounds(image: newImage, width: 100, height: 100)
@@ -322,17 +321,45 @@ class MapViewController: UIViewController, UIImagePickerControllerDelegate, UINa
                 newImage = self.maskRoundedImage(image: newImage, radius: Float(r), borderWidth: 4)
                 let marker = GMSMarker()
                 marker.icon = newImage
-                marker.position = CLLocationCoordinate2DMake(Double(latitude)!, Double(longitude)!
-                )
-                marker.map = self.mapView
                 
-                let camera = GMSCameraPosition.camera(withLatitude: Double(latitude)!, longitude: Double(longitude)!, zoom: 10)
-                self.mapView.animate(to: camera)
+                // 檢查經緯度是否存在
+                    let latitude = "\(dict["latitude"]!)"
+                    let longitude = "\(dict["longitude"]!)"
+                    print("user latitude\(latitude)")
+                    print("user latitude\(longitude)")
+                    marker.position = CLLocationCoordinate2DMake(Double(latitude)!, Double(longitude)!)
+                    marker.map = self.mapView
+                    
+                    let camera = GMSCameraPosition.camera(withLatitude: Double(latitude)!, longitude: Double(longitude)!, zoom: 10)
+                    self.mapView.animate(to: camera)
+
+//                if let latitude = (dict["latitude"])!{
+//                    let longitude = dict["longitude"]! as! String
+//                    print("user latitude\(latitude)")
+//                    print("user latitude\(longitude)")
+//                    marker.position = CLLocationCoordinate2DMake(Double(latitude), Double(longitude))
+//                    marker.map = self.mapView
+//                    
+//                    let camera = GMSCameraPosition.camera(withLatitude: Double(latitude as! String)!, longitude: Double(longitude)!, zoom: 10)
+//                    self.mapView.animate(to: camera)
+//                }
+                
                 
                 
             }
         }
     }
-
+    // MARK: - Navigation
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue:UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if segue.identifier == "showChat"{
+            let chatVc = segue.destination as! RoomChatViewController
+            chatVc.senderDisplayName = senderDisplayName
+            chatVc.targetRoomNum = targetRoomNum
+            print("傳segue進聊天畫面中...")
+        }
+        else{print("傳值error!!!!!!!!!!!")}
+    }
 }
 
