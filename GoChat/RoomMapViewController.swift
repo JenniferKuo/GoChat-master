@@ -56,14 +56,19 @@ class RoomMapViewController: UIViewController, UIImagePickerControllerDelegate, 
         print("傳送者的id = \(self.senderId)")
         
         // 新增user資訊到firebase 這間房間 TripGifRooms -> RoomNum -> 的user欄位
-        let thisUser = self.roomRef.child("roomUser").child("\(self.senderId)")
-        let newUserData = ["name":self.senderDisplayName, "latitude": self.myLat, "longitude": self.myLong]
-        thisUser.setValue(newUserData)
+        let thisUser = self.roomRef.child("roomUser").child(uuid)
+//        let newUserData = ["name":self.senderDisplayName, "latitude": self.myLat, "longitude": self.myLong]
+//        thisUser.setValue(newUserData)
+        thisUser.child("latitude").setValue(22.5)
+        thisUser.child("longitude").setValue(120)
+        print(self.myLat)
         print("已新增使用者")
-        //observeLocation()   // 開始讀取firebase目前有的使用者地理位置等資訊
-        //setupMap()          // 設置Google Map
+        setupMap()          // 設置Google Map
         DispatchQueue.main.async { () -> Void in
         }
+//        refreshLocation()
+        observeLocation()   // 開始讀取firebase目前有的使用者地理位置等資訊
+
     }
     
     
@@ -86,14 +91,15 @@ class RoomMapViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     // 刷新firebase中的目前使用者的地理位置資訊
     func refreshLocation() {
-        let prntRef  = self.roomRef.child("roomUser").child("\(self.senderId)")
+        let prntRef  = self.roomRef.child("roomUser").child(uuid)
         prntRef.updateChildValues(["latitude": self.myLat])
         prntRef.updateChildValues(["longitude": self.myLong])
     }
     
     // 按下refresh按鈕時，執行清除地圖上的所有marker，並放上新的marker，來製造使用者移動的效果
     @IBAction func updateLocation(){
-        //mapView.clear()
+        mapView.clear()
+        refreshLocation()
         observeLocation()
     }
     
@@ -109,7 +115,7 @@ class RoomMapViewController: UIViewController, UIImagePickerControllerDelegate, 
         myLat = String(describing: lat)
         myLong = String(describing: long)
         //  只要位置有變動，就刷新firebase中使用者的經緯度資料
-        refreshLocation()
+//        refreshLocation()
     }
     //
     @IBAction func choosePicture(sender: UIButton) {
@@ -273,30 +279,29 @@ class RoomMapViewController: UIViewController, UIImagePickerControllerDelegate, 
         locationManager.stopUpdatingLocation() // 背景執行時關閉定位功能
     }
     
-    func observeUsers(id: String){
-        self.roomRef.child("roomUser").child(id).observe(FIRDataEventType.value){
-            (snapshot: FIRDataSnapshot) in
-            if let dict = snapshot.value as? [String:String]
-            {
-                //取出自己資料
-                print(dict)
-                let myid = self.senderId
-                print("my id=\(myid)")
-            }
-        }
-    }
-    
+//    func observeUsers(id: String){
+//        self.roomRef.child("roomUser").child(id).observe(FIRDataEventType.value){
+//            (snapshot: FIRDataSnapshot) in
+//            if let dict = snapshot.value as? [String:String]
+//            {
+//                //取出自己資料
+//                print(dict)
+//                let myid = self.senderId
+//                print("my id=\(myid)")
+//            }
+//        }
+//    }
+//    
     func observeLocation(){
         self.roomRef.child("roomUser").observe(FIRDataEventType.childAdded){
             (snapshot: FIRDataSnapshot) in
             if let dict = snapshot.value as? [String: AnyObject]{
                 print("my dict\(dict)")
                 
-                let latitude = dict["latitude"] as! String
-                let longitude = dict["longitude"] as! String
-                
-                print("user latitude\(Double(latitude)!)")
-                print("user latitude\(Double(longitude)!)")
+//                let latitude = dict["latitude"] as! String
+//                let longitude = dict["longitude"] as! String
+//                print(dict["latitude"])
+
                 
                 // get user profile picture
                 var newImage = UIImage()
@@ -308,6 +313,7 @@ class RoomMapViewController: UIViewController, UIImagePickerControllerDelegate, 
                 }else{
                     newImage = UIImage(named:"default-user-image.png")!
                 }
+                
                 // make user as marker
                 newImage = self.ResizeImage(image: newImage, targetSize: CGSize(width: 80, height:80))
                 newImage = self.cropToBounds(image: newImage, width: 100, height: 100)
@@ -315,12 +321,31 @@ class RoomMapViewController: UIViewController, UIImagePickerControllerDelegate, 
                 newImage = self.maskRoundedImage(image: newImage, radius: Float(r), borderWidth: 4)
                 let marker = GMSMarker()
                 marker.icon = newImage
-                marker.position = CLLocationCoordinate2DMake(Double(latitude)!, Double(longitude)!
-                )
-                marker.map = self.mapView
                 
-                let camera = GMSCameraPosition.camera(withLatitude: Double(latitude)!, longitude: Double(longitude)!, zoom: 10)
-                self.mapView.animate(to: camera)
+                // 檢查經緯度是否存在
+                    let latitude = "\(dict["latitude"]!)"
+                    let longitude = "\(dict["longitude"]!)"
+                    print("user latitude\(latitude)")
+                    print("user latitude\(longitude)")
+                    marker.position = CLLocationCoordinate2DMake(Double(latitude)!, Double(longitude)!)
+                    marker.map = self.mapView
+                    
+                    let camera = GMSCameraPosition.camera(withLatitude: Double(latitude)!, longitude: Double(longitude)!, zoom: 10)
+                    self.mapView.animate(to: camera)
+
+//                if let latitude = (dict["latitude"])!{
+//                    let longitude = dict["longitude"]! as! String
+//                    print("user latitude\(latitude)")
+//                    print("user latitude\(longitude)")
+//                    marker.position = CLLocationCoordinate2DMake(Double(latitude), Double(longitude))
+//                    marker.map = self.mapView
+//                    
+//                    let camera = GMSCameraPosition.camera(withLatitude: Double(latitude as! String)!, longitude: Double(longitude)!, zoom: 10)
+//                    self.mapView.animate(to: camera)
+//                }
+                
+                
+                
             }
         }
     }
